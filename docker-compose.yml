@@ -1,17 +1,12 @@
-version: '2'
+version: '3.3'
+
+volumes:
+    mysql: {}
+    datavolume_drupal: {}
 
 services:
-    web:
-        build: web
-        ports:
-            - "80:80"
-        restart: always
-        networks:
-            - main
-        volumes:
-            - ./web/app:/var/www/html
-        # volume_driver: nfs
     mysql:
+        container_name: db
         build: mysql
         environment:
             MYSQL_ROOT_PASSWORD: "root"
@@ -20,8 +15,18 @@ services:
         ports:
             - "3306:3306"
         restart: always
-        networks:
-            - main
+        volumes:
+            - mysql:/var/lib/mysql
+            - ./db_backup:/var/www/db-backup
+    web:
+        container_name: web
+        build: web
+        ports:
+            - "80:80"
+        restart: always
+        volumes:
+            - ./web/app:/var/www/html
+            - datavolume_drupal:/var/www/html
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
@@ -32,15 +37,9 @@ services:
             PMA_USER: "root"
             PMA_PASSWORD: "root"
         restart: always
+        depends_on:
+          - mysql
         ports:
             - "8080:80"
-        links:
-            - mysql
         volumes:
             - /sessions
-        networks:
-            - main
-
-networks:
-    main:
-        driver: bridge
