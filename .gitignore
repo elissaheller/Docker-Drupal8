@@ -1,2 +1,3 @@
 web/app
 .DS_Store
+db_backup

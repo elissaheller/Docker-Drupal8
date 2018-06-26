@@ -18,6 +18,10 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-install pcntl \
     && docker-php-ext-install opcache \
     && docker-php-ext-install mbstring
+RUN apt-get install -y \
+  git \
+  wget \
+  nano
 RUN usermod -u 1000 www-data
 
 WORKDIR /etc/composer
@@ -26,7 +30,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/bin --filename=composer \
     && php -r "unlink('composer-setup.php');";
 
-RUN composer require drupal/console --prefer-dist --optimize-autoloader --sort-packages -vvv
-RUN ln -s /etc/composer/vendor/bin/drupal /usr/bin/drupal
+# RUN composer require drupal/console --prefer-dist --optimize-autoloader --sort-packages -vvv
+# RUN ln -s /etc/composer/vendor/bin/drupal /usr/bin/drupal
+# Install Drupal Console
+RUN curl https://drupalconsole.com/installer -o /usr/local/bin/drupal && \
+  chmod +x /usr/local/bin/drupal
 
 WORKDIR /var/www/html/
