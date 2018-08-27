@@ -34,6 +34,6 @@ This command will build the containers and start the web, phpmyadmin and mysql s
 
 ### Connect to Database in Sequel Pro
 
-Host: 0.0.0.0
-Username: root
-Password: root
+- Host: 0.0.0.0
+- Username: root
+- Password: root
