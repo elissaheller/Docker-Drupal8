@@ -31,3 +31,9 @@ This command will build the containers and start the web, phpmyadmin and mysql s
 ### Install Drupal 8
 
 	$ docker-compose exec web drupal site:install --db-host=mysql --db-name=drupal8 --db-user=root --db-pass=root
+
+### Connect to Database in Sequel Pro
+
+Host: 0.0.0.0
+Username: root
+Password: root
